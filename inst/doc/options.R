@@ -56,6 +56,10 @@ for (i in 0:2) {
   print(sdc_descriptives(data = df, id_var = "id", val_var = "v1"))
 }
 
-## ----reset options, include=FALSE---------------------------------------------
+## ----sdc.id_var---------------------------------------------------------------
+options(sdc.id_var = "id")
+
+## ----reset options,echo=-1----------------------------------------------------
 options(user_options)
+sdc_descriptives(data = df, val_var = "v1")
 
