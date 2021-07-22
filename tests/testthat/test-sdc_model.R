@@ -22,7 +22,6 @@ model_test_dt <- data.table(
   key = "id"
 )
 
-
 # create problems id's for x_3
 model_test_dt[id %chin% c("A", "B", "C", "D", "E", "F"), x_3 := NA_real_]
 
@@ -44,8 +43,8 @@ summary(model_1)
 # create ref
 ref_1 <- structure(
   list(
-    message_options = message_options(),
-    message_arguments = message_arguments(id_var = "id"),
+    options = list_options(),
+    settings = list_arguments(id_var = "id"),
     distinct_ids = structure(
       data.table(distinct_ids = 10L),
       class = c("sdc_distinct_ids", "data.table", "data.frame")
@@ -75,7 +74,10 @@ ref_1 <- structure(
 
 # test that sdc_model works correctly
 test_that("sdc_model() returns/works correctly", {
-  expect_equal(sdc_model(model_test_dt, model_1, "id"), ref_1)
+  expect_equal(
+    sdc_model(as.data.frame(model_test_dt, stringsAsFactors = FALSE), model_1, "id"),
+    ref_1
+  )
 })
 
 # model 2 ----
@@ -91,8 +93,8 @@ interactions_ref_2 <- structure(list(), names = character())
 # create ref. list
 ref_2 <- structure(
   list(
-    message_options = message_options(),
-    message_arguments = message_arguments(id_var = "id"),
+    options = list_options(),
+    settings = list_arguments(id_var = "id"),
     distinct_ids = structure(
       data.table(distinct_ids = 4L),
       class = c("sdc_distinct_ids", "data.table", "data.frame")
@@ -135,7 +137,7 @@ test_that("sdc_model() returns/works correctly", {
       ref_2
     ),
     paste0(
-      crayon::bold("POTENTIAL DISCLOSURE PROBLEM: "),
+      crayon::bold("DISCLOSURE PROBLEM: "),
       "Not enough distinct entities."
     ),
     fixed = TRUE
@@ -152,8 +154,8 @@ summary(model_3)
 # create ref
 ref_3 <- structure(
   list(
-    message_options = message_options(),
-    message_arguments = message_arguments(id_var = "id"),
+    options = list_options(),
+    settings = list_arguments(id_var = "id"),
     distinct_ids = structure(
       data.table(distinct_ids = 10L),
       class = c("sdc_distinct_ids", "data.table", "data.frame")
@@ -216,8 +218,8 @@ summary(model_4)
 # create ref
 ref_4 <- structure(
   list(
-    message_options = message_options(),
-    message_arguments = message_arguments(id_var = "id"),
+    options = list_options(),
+    settings = list_arguments(id_var = "id"),
     distinct_ids = structure(
       data.table(distinct_ids = 10L),
       class = c("sdc_distinct_ids", "data.table", "data.frame")
@@ -260,7 +262,7 @@ test_that("sdc_model() returns/works correctly", {
       ref_4
     ),
     paste0(
-      crayon::bold("POTENTIAL DISCLOSURE PROBLEM: "),
+      crayon::bold("DISCLOSURE PROBLEM: "),
       "Not enough distinct entities."
     ),
     fixed = TRUE
@@ -277,8 +279,8 @@ summary(model_5)
 # create ref
 ref_5 <- structure(
   list(
-    message_options = message_options(),
-    message_arguments = message_arguments(id_var = "id"),
+    options = list_options(),
+    settings = list_arguments(id_var = "id"),
     distinct_ids = structure(
       data.table(distinct_ids = 10L),
       class = c("sdc_distinct_ids", "data.table", "data.frame")
@@ -346,8 +348,8 @@ interactions_ref_6 <- structure(
 # create ref. list
 ref_6 <- structure(
   list(
-    message_options = message_options(),
-    message_arguments = message_arguments(id_var = "id"),
+    options = list_options(),
+    settings = list_arguments(id_var = "id"),
     distinct_ids = structure(
       data.table(distinct_ids = 10L),
       class = c("sdc_distinct_ids", "data.table", "data.frame")
@@ -389,7 +391,7 @@ test_that("sdc_model() returns/works correctly", {
       ref_6
     ),
     paste(
-      crayon::bold("POTENTIAL DISCLOSURE PROBLEM:"),
+      crayon::bold("DISCLOSURE PROBLEM:"),
       "Not enough distinct entities."
     ),
     fixed = TRUE
@@ -399,7 +401,6 @@ test_that("sdc_model() returns/works correctly", {
 
 # test arguments in sdc_model ----
 
-# test that sdc_model returns appropriate error
 test_that("sdc_model() returns appropriate error", {
 
   # error für nichtexistierende Elemente
@@ -453,3 +454,27 @@ test_that("sdc_model() returns appropriate error", {
     fixed = TRUE
   )
 })
+
+
+# test support for felm ----
+# simple case (lm)
+if (requireNamespace("lfe", quietly = TRUE)) {
+  options(sdc.id_var = "id")
+
+  felm_1 <- lfe::felm(y ~ x_1 + x_2 | 0 | 0 | 0, data = model_test_dt)
+  test_that("sdc_model() returns/works correctly for simple felm", {
+    expect_equal(
+      sdc_model(model_test_dt, felm_1, "id"),
+      ref_1
+    )
+  })
+
+  # case where id_var is used for clustering
+  felm_2 <- lfe::felm(y ~ x_1 + x_2 | id | 0 | id, data = model_test_dt)
+  test_that("sdc_model() returns/works correctly for simple felm", {
+    expect_equal(
+      sdc_model(model_test_dt, felm_2, "id"),
+      ref_1
+    )
+  })
+}

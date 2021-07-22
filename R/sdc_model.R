@@ -4,7 +4,8 @@
 #'   variables.
 #' @inheritParams common_arguments
 #' @param data [data.frame] which was used to build the model.
-#' @importFrom data.table as.data.table fsetequal rbindlist := %flike%
+#' @importFrom data.table is.data.table as.data.table fsetequal rbindlist :=
+#'   %flike%
 #' @importFrom broom augment tidy
 #' @importFrom stats model.frame na.omit
 #' @importFrom checkmate assert_data_frame assert_string
@@ -27,7 +28,9 @@ sdc_model <- function(data, model, id_var = getOption("sdc.id_var")) {
   # check inputs
   # input checks ----
   checkmate::assert_data_frame(data)
-  data <- data.table::as.data.table(data)
+  if (!data.table::is.data.table(data)) {
+    data <- data.table::as.data.table(data)
+  }
   col_names <- names(data)
 
   checkmate::assert_string(id_var)
@@ -61,8 +64,13 @@ sdc_model <- function(data, model, id_var = getOption("sdc.id_var")) {
   # ... and extract the model_frame / model_dt
   model_vars <- setdiff(
     names(data_model),
-    c(".fitted", ".se.fit", ".resid", ".hat", ".sigma", ".cooksd", ".std.resid",
-      ".rownames", ".cluster")
+    c(
+      ".fitted", ".se.fit", ".resid", ".hat", ".sigma", ".cooksd", ".std.resid",
+      ".rownames", ".cluster",
+      id_var
+      # exclude id_var because it will will be added below anyway. It might be
+      # listed here, if it's used for clustering in felm() for example.
+    )
   )
   names(model_vars) <- model_vars
 
@@ -171,8 +179,8 @@ sdc_model <- function(data, model, id_var = getOption("sdc.id_var")) {
   # return list with all messages and results
   structure(
     list(
-      message_options = message_options(),
-      message_arguments = message_arguments(id_var = id_var),
+      options = list_options(),
+      settings = list_arguments(id_var = id_var),
       distinct_ids = distinct_ids,
       terms = term_list
     ),

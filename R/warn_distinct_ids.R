@@ -3,6 +3,7 @@
 #'   a single warning.
 #' @param list [list] of elements of class `sdc_distinct_ids`.
 #' @return NULL
+#' @noRd
 warn_distinct_ids <- function(list) {
     distinct_ids <- NULL # removes NSE notes in R CMD check
 
@@ -14,7 +15,7 @@ warn_distinct_ids <- function(list) {
 
     if (sum(problems) > 0L) {
         warning(
-            crayon::bold("POTENTIAL DISCLOSURE PROBLEM: "),
+            crayon::bold("DISCLOSURE PROBLEM: "),
             "Not enough distinct entities.",
             call. = FALSE
         )

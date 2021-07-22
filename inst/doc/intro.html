@@ -26,11 +26,19 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -210,8 +218,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Before this result can be released, it must be checked whether all RDC rules for calculating this value have been followed. Thus, the underlying data is checked for compliance with the RDC rules. <!-- The following examples serve to illustrate the examination of these different cases. --></p>
 <p>This is the simplest case, the descriptive statistic (mean) was calculated for the variable <code>val_1</code> without further specifications. Required arguments of <code>sdc_descriptives()</code> are the data set (<code>data</code>), the ID variable (<code>id_var</code>) and the variable for which the statistics were calculated (<code>val_var</code>):</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_descriptives</span>(<span class="at">data =</span> sdc_descriptives_DT, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>, <span class="at">val_var =</span> <span class="st">&quot;val_1&quot;</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_1 | zero_as_NA: FALSE ]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_1 | zero_as_NA: FALSE</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Output complies to RDC rules.</span></span></code></pre></div>
 <p>Since there are no problems at this point, the function runs without warnings and returns (invisibly) a list of information containing options, settings and the checked criteria <code>distinct_ids</code> and <code>dominance</code>.</p>
 <p>Options and settings are always printed to show that all specifications are set according to RDC rules. From the output above follows that there are at least 5 distinct entities required (<code>sdc.n_ids: 5</code>) and that dominance is defined as 2 entities (<code>sdc.n_ids_dominance: 2</code>) with a value share of more than 85 percent (<code>sdc.share_dominance: 0.85</code>). This reflects the standard values for the options. For details on setting options see the <a href="options.html">separate vignette on options</a>.</p>
@@ -229,8 +237,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- To check this type of result we introduce the `by` argument in `sdc_descriptives()`.  -->
 <p>The mean is computed grouped by sector, so the grouping variable must be specified in <code>by</code>. Checking the results leads to the following:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_descriptives</span>(<span class="at">data =</span> sdc_descriptives_DT, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>, <span class="at">val_var =</span> <span class="st">&quot;val_1&quot;</span>, <span class="at">by =</span> <span class="st">&quot;sector&quot;</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_1 | by: sector | zero_as_NA: FALSE ]</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_1 | by: sector | zero_as_NA: FALSE</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Output complies to RDC rules.</span></span></code></pre></div>
 <p>The grouped descriptive statistics by sector do not generate a warning and therefore comply with RDC rules. Therefore, the results could be released in this case.</p>
 <p>In order to extend this case even further, it is now proposed to group the mean of <code>val_1</code> not only by <code>sector</code>, but also by <code>year</code>:</p>
@@ -247,10 +255,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">val_var =</span> <span class="st">&quot;val_1&quot;</span>,</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;sector&quot;</span>, <span class="st">&quot;year&quot;</span>)</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: POTENTIAL DISCLOSURE PROBLEM: Not enough distinct entities.</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: DISCLOSURE PROBLEM: Not enough distinct entities.</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: DISCLOSURE PROBLEM: Dominant entities.</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_1 | by: sector, year | zero_as_NA: FALSE ]</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_1 | by: c(&quot;sector&quot;, &quot;year&quot;) | zero_as_NA: FALSE</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Not enough distinct entities:</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    sector year distinct_ids</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:     S1 2019            4</span></span>
@@ -283,9 +291,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; A share of 0.2 of &#39;val_var&#39; are zero. These will be treated as &#39;NA&#39;.</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; To prevent this behavior and / or avoid this message, set &#39;zero_as_NA&#39; explicitly.</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: POTENTIAL DISCLOSURE PROBLEM: Not enough distinct entities.</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_2 | by: sector, year | zero_as_NA: TRUE ]</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: DISCLOSURE PROBLEM: Not enough distinct entities.</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_2 | by: c(&quot;sector&quot;, &quot;year&quot;) | zero_as_NA: TRUE</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Not enough distinct entities:</span></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    sector year distinct_ids</span></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:     S1 2020            3</span></span>
@@ -302,9 +310,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;sector&quot;</span>, <span class="st">&quot;year&quot;</span>),</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">zero_as_NA =</span> <span class="cn">FALSE</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_2 | by: sector, year | zero_as_NA: FALSE ]</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Output complies to RDC rules.</span></span></code></pre></div>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: DISCLOSURE PROBLEM: Not enough distinct entities.</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_2 | by: c(&quot;sector&quot;, &quot;year&quot;) | zero_as_NA: FALSE</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Not enough distinct entities:</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    sector year distinct_ids</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:     S1 2020            3</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:     S2 2020            3</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3:     S1 2019            5</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4:     S2 2019            5</span></span></code></pre></div>
 <p>Now <code>0</code> is not recognized as <code>NA</code> anymore. In this case the criterion of distinct entities is not longer violated. Therefore, the output could be released (assuming it is actually correct to treat <code>0</code>s as usual numeric values).</p>
 </div>
 </div>
@@ -344,8 +358,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Simple cases</h2>
 <p>In this simple case, extreme values should be calculated for variable <code>val_1</code>. This can be done with <code>sdc_min_max()</code> by specifying the dataset (<code>data</code>), the id variable (<code>id_var</code>) and the variable for which extreme values are to be calculated (<code>val_var</code>).</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_min_max</span>(<span class="at">data =</span> sdc_min_max_DT, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>, <span class="at">val_var =</span> <span class="st">&quot;val_1&quot;</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_1 ]</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_1</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    val_var min distinct_ids_min max distinct_ids_max</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:   val_1   3                5  18                5</span></span></code></pre></div>
 <p>Since no problems occur, the function (invisibly) returns a list with the options, settings and extreme values and prints the calculated extreme values. As shown in the output, the extreme values could be calculated and 5 distinct entities were used for each value. Thus, no additional entities had to be included in the calculation.</p>
@@ -356,16 +370,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Limiting the number of observations included in minimum and maximum using max_obs</h2>
 <p>In this case minimum and maximum values are to be calculated for variable <code>val_2</code>:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_min_max</span>(<span class="at">data =</span> sdc_min_max_DT, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>, <span class="at">val_var =</span> <span class="st">&quot;val_2&quot;</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_2 ]</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_2</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    val_var min distinct_ids_min      max distinct_ids_max</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:   val_2   3                5 67.14286                7</span></span></code></pre></div>
 <p>When we look at the output, we see that values from 5 distinct entities were used to calculate the minimum and 7 distinct entities to calculate the maximum. This is because the dominance criterion would be violated if only 5 distinct entities were considered for the maximum. Thus, 7 distinct entities are automatically taken into account.</p>
 <p>If you specify <code>max_obs = 5</code>, there is no feasible solution:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_min_max</span>(<span class="at">data =</span> sdc_min_max_DT, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>, <span class="at">val_var =</span> <span class="st">&quot;val_2&quot;</span>, <span class="at">max_obs =</span> <span class="dv">5</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; It is impossible to compute extreme values for variable &#39;val_2&#39; that comply to RDC rules.</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_2 ]</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_2</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    val_var min distinct_ids_min max distinct_ids_max</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:   val_2  NA               NA  NA               NA</span></span></code></pre></div>
 <p>Note that <code>max_obs</code> controls the maximum number of observations, not distinct entities.</p>
@@ -374,15 +388,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Minimum and maximum values by groups</h2>
 <p>It is also possible to calculate minimum and maximum values by groups. In the following, these are calculated by <code>year</code> and <code>sector</code>, separately.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_min_max</span>(<span class="at">data =</span> sdc_min_max_DT, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>, <span class="at">val_var =</span> <span class="st">&quot;val_1&quot;</span>, <span class="at">by =</span> <span class="st">&quot;year&quot;</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_1 | by: year ]</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_1 | by: year</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    val_var year min distinct_ids_min max distinct_ids_max</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:   val_1 2019   6                5  16                5</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:   val_1 2020   5                5  15                5</span></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_min_max</span>(<span class="at">data =</span> sdc_min_max_DT, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>, <span class="at">val_var =</span> <span class="st">&quot;val_1&quot;</span>, <span class="at">by =</span> <span class="st">&quot;sector&quot;</span>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_1 | by: sector ]</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_1 | by: sector</span></span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    val_var sector min distinct_ids_min max distinct_ids_max</span></span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:   val_1     S1  13                5  18                5</span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:   val_1     S2   3                5   8                5</span></span></code></pre></div>
@@ -398,8 +412,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Now a message occurs, explaining that RDC rules would be violated for the calculation of these values. For programming purposes, please note that the structure of the resulting <code>data.table</code> remains the same (but is filled with <code>NA</code>:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extreme_vals</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>res</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id | val_var: val_1 | by: sector, year ]</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id | val_var: val_1 | by: c(&quot;sector&quot;, &quot;year&quot;)</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    val_var sector year min distinct_ids_min max distinct_ids_max</span></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:   val_1     S1 2019  NA               NA  NA               NA</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:   val_1     S1 2020  NA               NA  NA               NA</span></span>
@@ -416,32 +430,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We have 80 observations of 10 different entities for the variables <code>y</code>, <code>x_1</code>, <code>x_2</code>, <code>x_3</code>, <code>x_4</code> and additional information on sector, year and country (dummy variables). A summary of the data set is given below.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;sdc_model_DT&quot;</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">skim</span>(sdc_model_DT))</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Data Summary ────────────────────────</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -- Data Summary ------------------------</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            Values      </span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Name                       sdc_model_DT</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of rows             80          </span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of columns          9           </span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; _______________________                </span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Column type frequency:                 </span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   factor                   4           </span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   numeric                  5           </span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ________________________               </span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Group variables            None        </span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Variable type: factor ──────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   skim_variable n_missing complete_rate ordered n_unique top_counts                    </span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 id                    0             1 FALSE         10 A: 8, B: 8, C: 8, D: 8        </span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 dummy_1               0             1 FALSE          2 S1: 40, S2: 40                </span></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 dummy_2               0             1 FALSE          8 Y1: 10, Y2: 10, Y3: 10, Y4: 10</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 dummy_3               0             1 FALSE          4 ES: 36, BE: 20, DE: 20, FR: 4 </span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Variable type: numeric ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   skim_variable n_missing complete_rate  mean      sd     p0   p25   p50   p75   p100 hist </span></span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 y                     0           1    121.    7.21 102.   116.   121.  125.   139. ▁▅▇▆▁</span></span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 x_1                   0           1    122.   13.3   95.9  111.   122.  133.   152. ▅▇▇▇▂</span></span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 x_2                   0           1    116.   19.4   86.1   99.1  113.  128.   152. ▇▇▆▃▆</span></span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 x_3                  48           0.4  126.   59.0   36.0   81.3  120.  173.   230. ▆▆▅▇▃</span></span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 x_4                   0           1   2544. 5944.     5.98  91.4  164.  227. 25059. ▇▁▁▁▁</span></span></code></pre></div>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Key                        id          </span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; _______________________                </span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Column type frequency:                 </span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   factor                   4           </span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   numeric                  5           </span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ________________________               </span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Group variables            None        </span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -- Variable type: factor ----------------------------------------------------------------------</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 x 6</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   skim_variable n_missing complete_rate ordered n_unique top_counts                    </span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * &lt;chr&gt;             &lt;int&gt;         &lt;dbl&gt; &lt;lgl&gt;      &lt;int&gt; &lt;chr&gt;                         </span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 id                    0             1 FALSE         10 A: 8, B: 8, C: 8, D: 8        </span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 dummy_1               0             1 FALSE          2 S1: 40, S2: 40                </span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 dummy_2               0             1 FALSE          8 Y1: 10, Y2: 10, Y3: 10, Y4: 10</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 dummy_3               0             1 FALSE          4 ES: 36, BE: 20, DE: 20, FR: 4 </span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -- Variable type: numeric ---------------------------------------------------------------------</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 x 11</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   skim_variable n_missing complete_rate  mean      sd     p0   p25   p50   p75   p100 hist </span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * &lt;chr&gt;             &lt;int&gt;         &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 y                     0           1    121.    7.21 102.   116.   121.  125.   139. &lt;U+2581&gt;&lt;U+2585&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2581&gt;</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 x_1                   0           1    122.   13.3   95.9  111.   122.  133.   152. &lt;U+2585&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2582&gt;</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 x_2                   0           1    116.   19.4   86.1   99.1  113.  128.   152. &lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2583&gt;&lt;U+2586&gt;</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 x_3                  48           0.4  126.   59.0   36.0   81.3  120.  173.   230. &lt;U+2586&gt;&lt;U+2586&gt;&lt;U+2585&gt;&lt;U+2587&gt;&lt;U+2583&gt;</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 x_4                   0           1   2544. 5944.     5.98  91.4  164.  227. 25059. &lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;</span></span></code></pre></div>
 <p>Various simple linear models are specified from this dataset for illustration purposes.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model_1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x_1 <span class="sc">+</span> x_2, <span class="at">data =</span> sdc_model_DT)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>model_2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x_1 <span class="sc">+</span> x_2 <span class="sc">+</span> x_3, <span class="at">data =</span> sdc_model_DT)</span>
@@ -454,13 +473,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Simple cases</h2>
 <p>A check of <code>model_1</code> and <code>model_3</code> is shown below.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_model</span>(<span class="at">data =</span> sdc_model_DT, <span class="at">model =</span> model_1, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id ]</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Output complies to RDC rules.</span></span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_model</span>(<span class="at">data =</span> sdc_model_DT, <span class="at">model =</span> model_3, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id ]</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id</span></span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Output complies to RDC rules.</span></span></code></pre></div>
 <p>As we see, there are no problems and the models could be released as output. Note that <code>sdc_log()</code> supports the interaction term in <code>model_3</code>.</p>
 </div>
@@ -468,9 +487,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Problematic cases</h2>
 <p>Now we turn to the problematic cases. We are checking the models <code>model_2</code> and <code>model_4</code>:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_model</span>(<span class="at">data =</span> sdc_model_DT, <span class="at">model =</span> model_2, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: POTENTIAL DISCLOSURE PROBLEM: Not enough distinct entities.</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id ]</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: DISCLOSURE PROBLEM: Not enough distinct entities.</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id</span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Not enough distinct entities:</span></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    distinct_ids</span></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:            4</span></span>
@@ -491,9 +510,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Some difficulties occur with these models, but which?</p>
 <p><code>model_2</code> leads to problems with the number of distinct entities. This problem arises with the inclusion of variable <code>x_3</code> due to a high number of <code>NA</code>s.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sdc_model</span>(<span class="at">data =</span> sdc_model_DT, <span class="at">model =</span> model_4, <span class="at">id_var =</span> <span class="st">&quot;id&quot;</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: POTENTIAL DISCLOSURE PROBLEM: Not enough distinct entities.</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ OPTIONS:  sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85 ]</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [ SETTINGS: id_var: id ]</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: DISCLOSURE PROBLEM: Not enough distinct entities.</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OPTIONS: sdc.n_ids: 5 | sdc.n_ids_dominance: 2 | sdc.share_dominance: 0.85</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SETTINGS: id_var: id</span></span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $dummy_3</span></span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Not enough distinct entities:</span></span>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dummy_3 distinct_ids</span></span>

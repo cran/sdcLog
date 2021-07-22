@@ -1,6 +1,26 @@
+# sdcLog 0.3.0
+
+### Possibly Breaking Changes
+
+* The objects returned by sdc_* functions now contain options and settings in a
+  much better structure. Before, it was a bunch of strings which could be pasted
+  together. Now, it's a list holding only the relevant values. The print output
+  remained almost identical (minor improvements) due to new print methods.
+
+### Improvements
+* `as.data.table()` in `sdc_*()` functions is now conditional so that it's only
+  called when `data` is not a `data.table` yet. This can save memory and improve
+  performance.
+* `sdc_model()` gained the new argument `local` (like in `source()`), which
+  allows new use cases. Thanks to Pantelis Karapanagiotis for the PR!
+  
+### Bug Fixes
+* `sdc_model()` no longer returns wrong results for `felm` models when the
+  `id_var` is used for clustering.
+
 # sdcLog 0.2.0
 
-### Breaking Changes
+### Possibly Breaking Changes
 
 * The `by` argument in `sdc_descriptives()` and `sdc_extreme()` now only accepts
   character input. This makes the code more robust and easier to maintain.

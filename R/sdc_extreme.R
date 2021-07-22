@@ -2,7 +2,8 @@
 #' @description Checks if calculation of extreme values comply to RDC rules. If
 #'   so, function returns average min and max values according to RDC rules.
 #' @inheritParams common_arguments
-#' @importFrom data.table as.data.table data.table setorderv fintersect uniqueN
+#' @importFrom data.table is.data.table as.data.table data.table setorderv
+#'   fintersect uniqueN
 #'   .N set
 #' @importFrom checkmate assert_int
 #' @export
@@ -25,7 +26,9 @@ sdc_min_max <- function(
 ) {
   # input checks ----
   checkmate::assert_data_frame(data)
-  data <- data.table::as.data.table(data)
+  if (!data.table::is.data.table(data)) {
+    data <- data.table::as.data.table(data)
+  }
   col_names <- names(data)
 
   checkmate::assert_string(id_var)
@@ -94,8 +97,8 @@ sdc_min_max <- function(
 
   structure(
     list(
-      message_options = message_options(),
-      message_arguments = message_arguments(id_var, val_var, by),
+      options = list_options(),
+      settings = list_arguments(id_var, val_var, by),
       min_max = res
     ),
     class = c("sdc_min_max", "list")
@@ -104,6 +107,7 @@ sdc_min_max <- function(
 
 
 #' @importFrom utils tail head
+#' @noRd
 find_SD <- function(data, type, n_obs, max_obs, id_var, val_var, by) {
   SD_fun <- switch(type, min = utils::tail, max = utils::head)
 
@@ -125,6 +129,7 @@ find_SD <- function(data, type, n_obs, max_obs, id_var, val_var, by) {
 }
 
 #' @importFrom data.table .SD
+#' @noRd
 find_SD_problems <- function(data, SD_fun, n_obs, id_var, val_var, by) {
   distinct_ids <- value_share <- NULL # removes NSE notes in R CMD check
 
