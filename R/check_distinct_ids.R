@@ -3,7 +3,7 @@
 #' @importFrom data.table uniqueN
 #' @noRd
 check_distinct_ids <- function(data, id_var, val_var = NULL, by = NULL) {
-  distinct_ids <- NULL # to silence NSE notes in RCDM check
+  distinct_ids <- NULL # to silence NSE notes in RCMD check
 
   # handle the case where no val_var is provided
   if (is.null(val_var)) {
@@ -11,7 +11,7 @@ check_distinct_ids <- function(data, id_var, val_var = NULL, by = NULL) {
   }
 
   distinct_ids <- data[
-    i = !is.na(get(val_var)),
+    i = !is.na(get(id_var)) & !is.na(get(val_var)),
     j = list(distinct_ids = data.table::uniqueN(get(id_var))),
     keyby = by
   ][

@@ -1,11 +1,27 @@
+# sdcLog 0.4.0
+
+### Improvements
+
+* Introduction of [mathjaxr](https://CRAN.R-project.org/package=mathjaxr) to
+  improve the quality and readability of the help files.
+* [lintr](https://CRAN.R-project.org/package=lintr) induced cleanup of the 
+  code base.
+
+### Bug Fixes
+
+* Fixed https://github.com/matthiasgomolka/sdcLog/issues/79.
+* Fixed https://github.com/matthiasgomolka/sdcLog/issues/83.
+* Fixed https://github.com/matthiasgomolka/sdcLog/issues/75.
+
 # sdcLog 0.3.0
 
 ### Possibly Breaking Changes
 
-* The objects returned by sdc_* functions now contain options and settings in a
-  much better structure. Before, it was a bunch of strings which could be pasted
-  together. Now, it's a list holding only the relevant values. The print output
-  remained almost identical (minor improvements) due to new print methods.
+* The objects returned by `sdc_*()` functions now contain options and settings
+  in a much better structure. Before, it was a bunch of strings which could be
+  pasted together. Now, it's a list holding only the relevant values. The print
+  output remained almost identical (minor improvements) due to new print 
+  methods.
 
 ### Improvements
 * `as.data.table()` in `sdc_*()` functions is now conditional so that it's only
