@@ -79,7 +79,9 @@ test_that("sdc_descriptives works in medium cases", {
       descriptives_ref_2,
       ignore_attr = TRUE
     ),
-    paste0(crayon::bold("DISCLOSURE PROBLEM: "), "Not enough distinct entities."),
+    paste(
+        cli::style_bold("DISCLOSURE PROBLEM:"), "Not enough distinct entities."
+    ),
     fixed = TRUE
   )
 })
@@ -218,27 +220,15 @@ test_that("sdc_descriptives() returns appropriate error", {
   # throw error if specified variables are not in data
   expect_error(
     sdc_descriptives(sdc_descriptives_DT, "wrong_id", "val_1"),
-    paste0(
-      "Assertion on 'id_var' failed: Must be a subset of {'id','id_na',",
-      "'sector','year','val_1','val_2'}, but is {'wrong_id'}."
-    ),
-    fixed = TRUE
+    "'id_var'.*subset"
   )
   expect_error(
     sdc_descriptives(sdc_descriptives_DT, "id", "wrong_val"),
-    paste0(
-      "Assertion on 'val_var' failed: Must be a subset of {'id_na',",
-      "'sector','year','val_1','val_2'}, but is {'wrong_val'}."
-    ),
-    fixed = TRUE
+    "'val_var'.*subset"
   )
   expect_error(
     sdc_descriptives(sdc_descriptives_DT, "id", "val_1", "wrong_by"),
-    paste0(
-      "Assertion on 'by' failed: Must be a subset of {'id_na','sector','year',",
-      "'val_2'}, but is {'wrong_by'}."
-    ),
-    fixed = TRUE
+    "'by'.*subset"
   )
 
   # error for elements unquoted
@@ -327,7 +317,7 @@ test_that("missing ID's are handled correctly (simple case)", {
       descriptives_ref_7,
       ignore_attr = TRUE
     ),
-    paste0(crayon::bold("DISCLOSURE PROBLEM: "), "Dominant entities."),
+    paste(cli::style_bold("DISCLOSURE PROBLEM:"), "Dominant entities."),
     fixed = TRUE
   )
 })
@@ -374,7 +364,9 @@ test_that("missing ID's are handled correctly (by case)", {
       descriptives_ref_8,
       ignore_attr = TRUE
     ),
-    paste0(crayon::bold("DISCLOSURE PROBLEM: "), "Not enough distinct entities."),
+    paste(
+        cli::style_bold("DISCLOSURE PROBLEM:"), "Not enough distinct entities."
+    ),
     fixed = TRUE
   )
 
@@ -415,7 +407,7 @@ test_that("missing ID's are handled correctly (by case)", {
       descriptives_ref_9,
       ignore_attr = TRUE
     ),
-    paste0(crayon::bold("DISCLOSURE PROBLEM: "), "Dominant entities."),
+    paste(cli::style_bold("DISCLOSURE PROBLEM:"), "Dominant entities."),
     fixed = TRUE
   )
 })
@@ -456,6 +448,25 @@ test_that("all ID's NA are handled correctly", {
     ignore_attr = TRUE
   )
 })
+
+# some id's ----
+test_that("argument fill_id_var works", {
+    data("sdc_descriptives_DT")
+    id_na <- sdc_descriptives_DT[["id_na"]]
+    expect_warning(
+        sdc_descriptives(sdc_descriptives_DT, "id_na", val_var = "val_1", by = "sector"),
+        paste(
+            cli::style_bold("DISCLOSURE PROBLEM:"), "Not enough distinct entities."
+        ),
+        fixed = TRUE
+    )
+
+    expect_silent(
+        sdc_descriptives(sdc_descriptives_DT, "id_na", val_var = "val_1", by = "sector", fill_id_var = TRUE)
+    )
+    expect_identical(sdc_descriptives_DT[["id_na"]], id_na)
+})
+
 
 test_that("#77 is fixed", {
   options(sdc.info_level = 2)
@@ -526,7 +537,9 @@ test_that("#83 is fixed", {
 
   expect_warning(
     {res <- sdc_descriptives(df, "id", "val", "by_var")},
-    paste0(crayon::bold("DISCLOSURE PROBLEM: "), "Not enough distinct entities."),
+    paste(
+        cli::style_bold("DISCLOSURE PROBLEM:"), "Not enough distinct entities."
+    ),
     fixed = TRUE
   )
   expect_equal(
@@ -546,3 +559,4 @@ test_that("preventing val_var = 'val_var' works", {
     fixed = TRUE
   )
 })
+

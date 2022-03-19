@@ -87,8 +87,8 @@ test_that("too few distinct id's are handled correctly", {
       ref_2,
       ignore_attr = TRUE
     ),
-    paste0(crayon::bold("DISCLOSURE PROBLEM: "),
-           "Not enough distinct entities."
+    paste(
+        cli::style_bold("DISCLOSURE PROBLEM:"), "Not enough distinct entities."
     ),
     fixed = TRUE
   )
@@ -96,45 +96,45 @@ test_that("too few distinct id's are handled correctly", {
 
 
 # no problems, with dummys ----
-test_that("dummies are handled correctly", {
-  data("sdc_model_DT")
+data("sdc_model_DT")
 
-  model_3 <- lm(y ~ x_1 + x_2 + dummy_1 + dummy_2, data = sdc_model_DT)
-  summary(model_3)
+model_3 <- lm(y ~ x_1 + x_2 + dummy_1 + dummy_2, data = sdc_model_DT)
+summary(model_3)
 
-  # create ref
-  ref_3 <- structure(
+# create ref
+ref_3 <- structure(
     list(
-      options = list_options(),
-      settings = list_arguments(id_var = "id"),
-      distinct_ids = structure(
-        data.table(distinct_ids = 10L),
-        class = c("sdc_distinct_ids", "data.table", "data.frame")
-      ),
-      terms = list(
-        x_1 = structure(
-          data.table(x_1 = "<non-zero>", distinct_ids = 10L, key = "x_1"),
-          class = c("sdc_distinct_ids", "data.table", "data.frame")
+        options = list_options(),
+        settings = list_arguments(id_var = "id"),
+        distinct_ids = structure(
+            data.table(distinct_ids = 10L),
+            class = c("sdc_distinct_ids", "data.table", "data.frame")
         ),
-        x_2 = structure(
-          data.table(x_2 = "<non-zero>", distinct_ids = 10L, key = "x_2"),
-          class = c("sdc_distinct_ids", "data.table", "data.frame")
-        ),
-        dummy_1 = structure(
-          data.table( dummy_1 = factor(c("M1", "M2")), distinct_ids = 10L),
-          class = c("sdc_distinct_ids", "data.table", "data.frame"),
-          sorted = "dummy_1"
-        ),
-        dummy_2 = structure(
-          data.table(dummy_2 = factor(paste0("Y", 1:8)), distinct_ids = 5L),
-          class = c("sdc_distinct_ids", "data.table", "data.frame"),
-          sorted = "dummy_2"
+        terms = list(
+            x_1 = structure(
+                data.table(x_1 = "<non-zero>", distinct_ids = 10L, key = "x_1"),
+                class = c("sdc_distinct_ids", "data.table", "data.frame")
+            ),
+            x_2 = structure(
+                data.table(x_2 = "<non-zero>", distinct_ids = 10L, key = "x_2"),
+                class = c("sdc_distinct_ids", "data.table", "data.frame")
+            ),
+            dummy_1 = structure(
+                data.table( dummy_1 = factor(c("M1", "M2")), distinct_ids = 10L),
+                class = c("sdc_distinct_ids", "data.table", "data.frame"),
+                sorted = "dummy_1"
+            ),
+            dummy_2 = structure(
+                data.table(dummy_2 = factor(paste0("Y", 1:8)), distinct_ids = 5L),
+                class = c("sdc_distinct_ids", "data.table", "data.frame"),
+                sorted = "dummy_2"
+            )
         )
-      )
     ),
     class = c("sdc_model", "list")
-  )
+)
 
+test_that("dummies are handled correctly", {
   expect_equal(
     sdc_model(sdc_model_DT, model_3, "id"),
     ref_3,
@@ -186,9 +186,8 @@ test_that("dummy problems are handled correctly", {
       ref_4,
       ignore_attr = TRUE
     ),
-    paste0(
-      crayon::bold("DISCLOSURE PROBLEM: "),
-      "Not enough distinct entities."
+    paste(
+        cli::style_bold("DISCLOSURE PROBLEM:"), "Not enough distinct entities."
     ),
     fixed = TRUE
   )
@@ -295,8 +294,7 @@ test_that("interaction with problems is handled correctly", {
       ignore_attr = TRUE
     ),
     paste(
-      crayon::bold("DISCLOSURE PROBLEM:"),
-      "Not enough distinct entities."
+        cli::style_bold("DISCLOSURE PROBLEM:"), "Not enough distinct entities."
     ),
     fixed = TRUE
   )
@@ -318,8 +316,7 @@ test_that("sdc_model() returns appropriate errors", {
   )
   expect_error(
     sdc_model(sdc_model_DT, model_1, "wrong_id"),
-    "Assertion on 'id_var' failed: Must be a subset of {'id','y','x_1','x_2','x_3','x_4','dummy_1','dummy_2','dummy_3'}, but is {'wrong_id'}.",
-    fixed = TRUE
+    "'id_var'.*subset"
   )
   expect_error(
     sdc_model(wrong_model_dt, model_1, "id"),
@@ -405,8 +402,8 @@ test_that("Bug from #79 is solved", {
         id_var = "id"
       )
     ),
-    paste0(crayon::bold("DISCLOSURE PROBLEM: "),
-           "Not enough distinct entities."
+    paste(
+        cli::style_bold("DISCLOSURE PROBLEM:"), "Not enough distinct entities."
     ),
     fixed = TRUE
   )
@@ -446,4 +443,23 @@ test_that("Bug from #79 is solved", {
     ref_issue_79,
     ignore_attr = TRUE
   )
+})
+
+
+test_that("argument fill_id_var works", {
+    data("sdc_model_DT")
+    sdc_model_DT[!(id %in% c("A", "F")), id_na := id]
+    id_na <- sdc_model_DT[["id_na"]]
+    expect_warning(
+        sdc_model(sdc_model_DT, model_3, "id_na"),
+        paste(
+            cli::style_bold("DISCLOSURE PROBLEM:"), "Not enough distinct entities."
+        ),
+        fixed = TRUE
+    )
+
+    expect_silent(
+        sdc_model(sdc_model_DT, model_3, "id_na", fill_id_var = TRUE)
+    )
+    expect_identical(sdc_model_DT[["id_na"]], id_na)
 })
