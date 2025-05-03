@@ -34,7 +34,7 @@ sdc_descriptives(data = sdc_descriptives_DT, id_var = "id", val_var = "val_1")
 ## ----descriptives_by_case------------------------------------------------------------------
 sdc_descriptives_DT[, .(mean = mean(val_1, na.rm = TRUE)), by = "sector"]
 
-## ---- descriptives_by----------------------------------------------------------------------
+## ----descriptives_by-----------------------------------------------------------------------
 sdc_descriptives(data = sdc_descriptives_DT, id_var = "id", val_var = "val_1", by = "sector")
 
 ## ----descriptives_byby_case----------------------------------------------------------------
@@ -120,10 +120,10 @@ sdc_model(data = sdc_model_DT, model = model_2, id_var = "id")
 sdc_model(data = sdc_model_DT, model = model_4, id_var = "id")
 
 ## ----eval = FALSE--------------------------------------------------------------------------
-#  sdc_log(
-#    r_scripts = "/home/my_project/R/my_script.R",
-#    log_files = "/home/my_project/log/my_script.txt"
-#  )
+# sdc_log(
+#   r_scripts = "/home/my_project/R/my_script.R",
+#   log_files = "/home/my_project/log/my_script.txt"
+# )
 
 ## ----reset options, include=FALSE---------------------------------------------
 options(user_options)

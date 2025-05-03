@@ -1,7 +1,7 @@
 Package: sdcLog
 Title: Tools for Statistical Disclosure Control in Research Data
         Centers
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: c(
     person("Matthias", "Gomolka", , "matthias.gomolka@posteo.de", role = c("aut", "cre")),
     person("Tim", "Becker", role = "aut"),
@@ -14,7 +14,7 @@ Description: Tools for researchers to explicitly show that their results
     Also included is a simple function to create log files. The methods
     used here are described in the "Guidelines for the checking of output
     based on microdata research" by Bond, Brandt, and de Wolf (2015)
-    <https://ec.europa.eu/eurostat/cros/system/files/dwb_standalone-document_output-checking-guidelines.pdf>.
+    <https://cros.ec.europa.eu/system/files/2024-02/Output-checking-guidelines.pdf>.
 License: GPL-3
 URL: https://github.com/matthiasgomolka/sdcLog
 BugReports: https://github.com/matthiasgomolka/sdcLog/issues
@@ -29,12 +29,12 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2022-03-19 20:00:46 UTC; matthias
+Packaged: 2025-05-03 08:46:49 UTC; matth
 Author: Matthias Gomolka [aut, cre],
   Tim Becker [aut],
   Pantelis Karapanagiotis [ctb]
 Maintainer: Matthias Gomolka <matthias.gomolka@posteo.de>
 Repository: CRAN
-Date/Publication: 2022-03-19 20:20:02 UTC
+Date/Publication: 2025-05-03 09:10:02 UTC
